@@ -1,0 +1,80 @@
+{
+    "name": "gherlint",
+    "displayName": "GherLint",
+    "description": "Formatter and Linter for Gherkin language",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.62.0"
+    },
+    "publisher": "sawjan",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JankariTech/GherkinLinter.git"
+    },
+    "bugs": {
+        "url": "https://github.com/JankariTech/GherkinLinter.git/issues"
+    },
+    "author": "Sawjan G.",
+    "categories": [
+        "Programming Languages"
+    ],
+    "keywords": [
+        "gherkin",
+        "cucumber",
+        "feature",
+        "bdd"
+    ],
+    "activationEvents": [
+        "onLanguage:gherkin"
+    ],
+    "main": "./client/src/extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "gherkin",
+                "extensions": [
+                    ".feature"
+                ],
+                "aliases": [
+                    "Gherkin",
+                    "gherkin",
+                    "feature",
+                    "cucumber"
+                ],
+                "configuration": ""
+            }
+        ]
+    },
+    "capabilities": {
+        "documentFormattingProvider": "true",
+        "configuration": {
+            "type": "object",
+            "title": "Gherlint configuration",
+            "properties": {
+                "gherlint.maxNumberOfProblems": {
+                    "scope": "resource",
+                    "type": "number",
+                    "default": 1000,
+                    "description": "Controls the maximum number of problems produced by the server."
+                },
+                "gherlint.trace.server": {
+                    "scope": "window",
+                    "type": "string",
+                    "enum": [
+                        "off",
+                        "message",
+                        "verbose"
+                    ],
+                    "default": "off",
+                    "description": "Traces the communication between VS Code and the language server."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "pretest": "yarn run lint",
+        "vscode:prepublish": "npm run compile",
+        "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+    }
+}
