@@ -9,10 +9,41 @@ const exampleKeywords = ['Background', 'Scenario', 'Example', 'Scenario Outline'
 
 module.exports.validateDocument = function (document, docConfig) {
     const diagnostics = [];
+    validateFeature(document, diagnostics);
     checkBeginningStep(document, diagnostics, docConfig);
     checkRepeatedSteps(document, diagnostics);
     return diagnostics;
 };
+
+function validateFeature(document, diagnostics) {
+    let text = document.getText();
+    const regex = /(?<!\S( )*)Feature:/g;
+    let matchCount = 0;
+    while ((match = regex.exec(text))) {
+        matchCount++;
+        // only show error from second match onward
+        if (matchCount > 1) {
+            diagnostics.push({
+                severity: DiagnosticSeverity.Error,
+                range: {
+                    start: document.positionAt(match.index),
+                    end: document.positionAt(match.index + match[0].length),
+                },
+                message: 'There must be only one "Feature" keyword in a file.',
+            });
+        }
+    }
+    if (!matchCount) {
+        diagnostics.push({
+            severity: DiagnosticSeverity.Error,
+            range: {
+                start: document.positionAt(1),
+                end: document.positionAt(1),
+            },
+            message: 'A valid feature file must have a Feature name.\nE.g., Feature: Login feature',
+        });
+    }
+}
 
 function checkBeginningStep(document, diagnostics, docConfig) {
     let text = document.getText();
