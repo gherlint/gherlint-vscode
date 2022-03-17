@@ -10,7 +10,7 @@ const exampleKeywords = ['Background', 'Scenario', 'Example', 'Scenario Outline'
 module.exports.validateDocument = function (document, docConfig) {
     const diagnostics = [];
     validateFeature(document, diagnostics);
-    checkBeginningStep(document, diagnostics, docConfig);
+    validateBeginningStep(document, diagnostics, docConfig);
     checkRepeatedSteps(document, diagnostics);
     return diagnostics;
 };
@@ -45,7 +45,7 @@ function validateFeature(document, diagnostics) {
     }
 }
 
-function checkBeginningStep(document, diagnostics, docConfig) {
+function validateBeginningStep(document, diagnostics, docConfig) {
     let text = document.getText();
     const regex =
         /(?<=(Background:|Scenario( (Outline|Template))?:|Example:)(.*)[\n\r](\s)*)[GWTAB]{1}[ivenhdut]{2,4}/g;
@@ -65,7 +65,6 @@ function checkBeginningStep(document, diagnostics, docConfig) {
             });
         }
     }
-    return diagnostics;
 }
 
 function checkRepeatedSteps(document, diagnostics) {
@@ -83,6 +82,12 @@ function checkRepeatedSteps(document, diagnostics) {
             // also count line break
             lineLength += 1;
         }
+
+        // don't process empty or comment line
+        if (!line.length || line.trim().startsWith('#')) {
+            index += lineLength;
+            return;
+        }
         const match = regex.exec(line);
         if (Boolean(match)) {
             const matchStep = match[0].trim().trim(':');
@@ -92,16 +97,14 @@ function checkRepeatedSteps(document, diagnostics) {
                 if (matchStep !== 'But') {
                     message += ' or "But"';
                 }
-
-                let diagnostic = {
+                diagnostics.push({
                     severity: DiagnosticSeverity.Warning,
                     range: {
                         start: document.positionAt(index + match.index),
                         end: document.positionAt(rangeEnd),
                     },
                     message,
-                };
-                diagnostics.push(diagnostic);
+                });
             }
             if (matchStep !== 'And') {
                 prevStep = matchStep;
@@ -112,5 +115,4 @@ function checkRepeatedSteps(document, diagnostics) {
         }
         index += lineLength;
     });
-    return diagnostics;
 }
