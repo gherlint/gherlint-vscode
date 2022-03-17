@@ -1,4 +1,5 @@
 const { DiagnosticSeverity } = require('vscode-languageserver/node');
+const defaultSettings = require('./defaultSettings');
 
 const keywordsRegex =
     /(Feature:|Rule:|Background:|Scenario( (Outline|Template))?:|Given|When|Then|And|But|Example(s)?:|Scenarios:)/;
@@ -8,25 +9,30 @@ const exampleKeywords = ['Background', 'Scenario', 'Example', 'Scenario Outline'
 
 module.exports.validateDocument = function (document, docConfig) {
     const diagnostics = [];
-    diagnostics.push(...checkBeginningStep(document, diagnostics));
-    diagnostics.push(...checkRepeatedSteps(document, diagnostics));
+    checkBeginningStep(document, diagnostics, docConfig);
+    checkRepeatedSteps(document, diagnostics);
     return diagnostics;
 };
 
-function checkBeginningStep(document, diagnostics) {
+function checkBeginningStep(document, diagnostics, docConfig) {
     let text = document.getText();
-    const regex = /(Background:|Scenario( (Outline|Template))?:|Example:)/;
-    let noOfIssue = 0;
-    while ((match = regex.exec(text)) && noOfIssue < docConfig.maxNumberOfProblems) {
-        noOfIssue++;
-        diagnostics.push({
-            severity: DiagnosticSeverity.Warning,
-            range: {
-                start: document.positionAt(match.index),
-                end: document.positionAt(match.index + match[0].length),
-            },
-            message: `Starting step must be "Given" or "When" step`,
-        });
+    const regex =
+        /(?<=(Background:|Scenario( (Outline|Template))?:|Example:)(.*)[\n\r](\s)*)[GWTAB]{1}[ivenhdut]{2,4}/g;
+    let noOfProblem = 0;
+    const maxNumberOfProblems = docConfig.maxNumberOfProblems || defaultSettings.maxNumberOfProblems;
+    while ((match = regex.exec(text)) && noOfProblem < maxNumberOfProblems) {
+        noOfProblem++;
+        matchStep = match[0].trim();
+        if (!['Given', 'When'].includes(matchStep)) {
+            diagnostics.push({
+                severity: DiagnosticSeverity.Warning,
+                range: {
+                    start: document.positionAt(match.index),
+                    end: document.positionAt(match.index + match[0].length),
+                },
+                message: 'Starting step must be "Given" or "When" step',
+            });
+        }
     }
     return diagnostics;
 }
@@ -51,13 +57,18 @@ function checkRepeatedSteps(document, diagnostics) {
             const matchStep = match[0].trim().trim(':');
             if (prevStep === matchStep) {
                 const rangeEnd = index + match.index + matchStep.length;
+                let message = `Replace "${matchStep}" with "And"`;
+                if (matchStep !== 'But') {
+                    message += ' or "But"';
+                }
+
                 let diagnostic = {
                     severity: DiagnosticSeverity.Warning,
                     range: {
                         start: document.positionAt(index + match.index),
                         end: document.positionAt(rangeEnd),
                     },
-                    message: `Replace '${matchStep}' with 'And' or 'But'`,
+                    message,
                 };
                 diagnostics.push(diagnostic);
             }

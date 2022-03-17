@@ -7,6 +7,7 @@ const {
 } = require('vscode-languageserver/node');
 const { TextDocument } = require('vscode-languageserver-textdocument');
 
+const defaultSettings = require('./defaultSettings');
 const { validateDocument } = require('./linter');
 
 // Create a connection for the server, using Node's IPC as a transport.
@@ -17,6 +18,14 @@ const documents = new TextDocuments(TextDocument);
 
 let hasConfigurationCapability = false;
 let hasWorkspaceFolderCapability = false;
+
+// The global settings, used when the `workspace/configuration` request is not supported by the client.
+// Please note that this is not the case when using this server with the client provided in this example
+// but could happen with other clients.
+let globalSettings = defaultSettings;
+
+// Cache the settings of all open documents
+let documentSettings = new Map();
 
 connection.onInitialize((params) => {
     const capabilities = params.capabilities;
@@ -54,15 +63,6 @@ connection.onInitialized(() => {
     }
 });
 
-// The global settings, used when the `workspace/configuration` request is not supported by the client.
-// Please note that this is not the case when using this server with the client provided in this example
-// but could happen with other clients.
-const defaultSettings = { maxNumberOfProblems: 1000 };
-let globalSettings = defaultSettings;
-
-// Cache the settings of all open documents
-let documentSettings = new Map();
-
 connection.onDidChangeConfiguration((change) => {
     if (hasConfigurationCapability) {
         // Reset all cached document settings
@@ -72,7 +72,7 @@ connection.onDidChangeConfiguration((change) => {
     }
     // Revalidate all open documents
     documents.all().forEach((document) => {
-        const docConfig = getDocumentConfig(document);
+        const docConfig = getDocumentConfig(document.uri);
         validateDocument(document, docConfig);
     });
 });
@@ -85,9 +85,9 @@ documents.onDidClose((_event) => {
 // The content of a text document has changed. This event is emitted
 // when the text document first opened or when its content has changed.
 documents.onDidChangeContent(async ({ document }) => {
-    const docConfig = getDocumentConfig(document);
+    const docConfig = await getDocumentConfig(document.uri);
     // Revalidate the document
-    const diagnostics = await validateDocument(document, docConfig);
+    const diagnostics = validateDocument(document, docConfig);
 
     // Send the computed diagnostics to VS Code.
     connection.sendDiagnostics({ uri: document.uri, diagnostics });
@@ -100,17 +100,20 @@ documents.listen(connection);
 // Listen on the connection
 connection.listen();
 
-function getDocumentConfig(document) {
+async function getDocumentConfig(resource) {
     if (!hasConfigurationCapability) {
-        return Promise.resolve(globalSettings);
+        return globalSettings;
     }
-    let result = documentSettings.get(document);
+    let result = documentSettings.get(resource);
     if (!result) {
-        result = connection.workspace.getConfiguration({
-            scopeUri: document,
+        result = await connection.workspace.getConfiguration({
+            scopeUri: resource,
             section: 'gherlint',
         });
-        documentSettings.set(document, result);
+        if (!result) {
+            return globalSettings;
+        }
+        documentSettings.set(resource, result);
     }
     return result;
 }
