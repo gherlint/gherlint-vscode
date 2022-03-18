@@ -1,8 +1,7 @@
 const { DiagnosticSeverity } = require('vscode-languageserver/node');
+const { removeCommentsTags } = require('./utils');
 const defaultSettings = require('./defaultSettings');
-
-const keywordsRegex =
-    /(Feature:|Rule:|Background:|Scenario( (Outline|Template))?:|Given|When|Then|And|But|Example(s)?:|Scenarios:)/;
+const Keywords = require('./keywords');
 
 const stepKeywords = ['Given', 'When', 'Then', 'And', 'But'];
 const exampleKeywords = ['Background', 'Scenario', 'Example', 'Scenario Outline', 'Scenario Template'];
@@ -46,9 +45,10 @@ function validateFeature(document, diagnostics) {
 }
 
 function validateBeginningStep(document, diagnostics, docConfig) {
-    let text = document.getText();
+    let text = removeCommentsTags(document.getText());
     const regex =
         /(?<=(Background:|Scenario( (Outline|Template))?:|Example:)(.*)[\n\r](\s)*)[GWTAB]{1}[ivenhdut]{2,4}/g;
+
     let noOfProblem = 0;
     const maxNumberOfProblems = docConfig.maxNumberOfProblems || defaultSettings.maxNumberOfProblems;
     while ((match = regex.exec(text)) && noOfProblem < maxNumberOfProblems) {
@@ -68,7 +68,7 @@ function validateBeginningStep(document, diagnostics, docConfig) {
 }
 
 function checkRepeatedSteps(document, diagnostics) {
-    let text = document.getText();
+    let text = removeCommentsTags(document.getText());
     const lines = text.split('\n');
     const regex = /[GWTAB]{1}[ivenhdut]{2,4}/;
 
@@ -83,8 +83,8 @@ function checkRepeatedSteps(document, diagnostics) {
             lineLength += 1;
         }
 
-        // don't process empty or comment line
-        if (!line.length || line.trim().startsWith('#')) {
+        // do not process empty line
+        if (!line.trim().length) {
             index += lineLength;
             return;
         }
@@ -112,7 +112,11 @@ function checkRepeatedSteps(document, diagnostics) {
             if (!stepKeywords.includes(matchStep)) {
                 prevStep = '';
             }
+        } else {
+            console.log(line);
         }
         index += lineLength;
     });
 }
+
+function isUnknownLine(line) {}
