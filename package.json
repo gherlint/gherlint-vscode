@@ -62,8 +62,10 @@
         }
     },
     "scripts": {
-        "pretest": "yarn run lint",
-        "vscode:prepublish": "npm run compile",
+        "package": "vsce package",
         "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+    },
+    "dependencies": {
+        "vsce": "^2.7.0"
     }
 }
