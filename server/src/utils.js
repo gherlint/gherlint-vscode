@@ -21,7 +21,7 @@ function replaceDocString(text) {
 }
 
 function replaceStory(text) {
-    const regex = /(?<=Feature:.*[\s])[\s]*[Aa]s (.*)[\s]*[Ii] want (.*)[\s]*[Ss]o that (.*)/;
+    const regex = /(?<=Feature:.*[\s])[\s]*[Aa]s (.*)[\s]*[Ii] (.*)[\s]*[Ss]o that (.*)/;
     const match = regex.exec(text);
     if (match) {
         const hiddenDocString = match[0].replace(/\S/g, ' ');
