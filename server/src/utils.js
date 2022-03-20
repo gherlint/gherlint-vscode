@@ -23,9 +23,10 @@ function replaceDocString(text) {
 function replaceStory(text) {
     const regex = /(?<=Feature:.*[\s])[\s]*[Aa]s (.*)[\s]*[Ii] want (.*)[\s]*[Ss]o that (.*)/;
     const match = regex.exec(text);
-    const hiddenDocString = match[0].replace(/\S/g, ' ');
-    text = text.substring(0, match.index) + hiddenDocString + text.substring(match.index + hiddenDocString.length);
-
+    if (match) {
+        const hiddenDocString = match[0].replace(/\S/g, ' ');
+        text = text.substring(0, match.index) + hiddenDocString + text.substring(match.index + hiddenDocString.length);
+    }
     return text;
 }
 
