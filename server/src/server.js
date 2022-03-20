@@ -8,7 +8,7 @@ const {
 const { TextDocument } = require('vscode-languageserver-textdocument');
 
 const defaultSettings = require('./defaultSettings');
-const { validateDocument } = require('./linter');
+const { validateDocument } = require('./linter/linter');
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
