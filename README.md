@@ -1,6 +1,6 @@
 <h2 align="center">
   <br>
-    <img src="https://github.com/JankariTech/GherkinLinter/blob/feat/linter/img/logo.jpg" alt="logo" width="200">
+    <img src="https://github.com/JankariTech/GherkinLinter/blob/feat/linter/img/logo.png" alt="logo" width="200">
   <br><br>
   GherLint
   <br>
