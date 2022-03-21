@@ -100,8 +100,8 @@ function validateByLine(document, text, diagnostics) {
             if (prevStep === matchStep) {
                 const rangeEnd = index + match.index + matchStep.length;
                 let message = Messages.repeatedStep;
-                if (matchStep === Keywords.But) {
-                    message = Messages.repeatedStepForBut;
+                if (matchStep === Keywords.Then) {
+                    message = Messages.repeatedStepForThen;
                 }
                 addToDiagnostics(document, diagnostics, index + match.index, rangeEnd, message);
             }
