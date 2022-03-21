@@ -70,8 +70,8 @@
             "match": "^\\s*(Given|When|Then|And|But|\\*)"
         },
         "scenario_outline_variable": {
-            "begin": "(?<![a-zA-Z0-9])[\"']<",
-            "end": ">[\"'](?![a-zA-Z0-9])",
+            "begin": "(?<![a-zA-Z0-9])[\"']?<",
+            "end": ">[\"']?(?![a-zA-Z0-9])",
             "name": "entity.name.function"
         },
         "table": {
