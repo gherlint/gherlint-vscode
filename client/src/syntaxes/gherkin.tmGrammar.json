@@ -1,0 +1,120 @@
+{
+    "fileTypes": ["feature"],
+    "scopeName": "text.gherkin",
+    "firstLineMatch": "^\\s*Feature(.*)",
+    "foldingStartMarker": "^\\s*(Rule|Background|Scenario|Example|Scenario Outline|Scenario Template|Examples|Scenarios)",
+    "foldingStopMarker": "^\\s*$",
+    "keyEquivalent": "^~C",
+    "name": "Gherkin",
+    "patterns": [
+        {
+            "include": "#feature_keyword"
+        },
+        {
+            "include": "#feature_element_keyword"
+        },
+        {
+            "include": "#step_keyword"
+        },
+        {
+            "include": "#table"
+        },
+        {
+            "include": "#scenario_outline_variable"
+        },
+        {
+            "include": "#strings_triple_quote"
+        },
+        {
+            "include": "#strings_single_quote"
+        },
+        {
+            "include": "#strings_double_quote"
+        },
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#tags"
+        }
+    ],
+    "repository": {
+        "feature_keyword": {
+            "captures": {
+                "1": {
+                    "name": "storage.type"
+                },
+                "2": {
+                    "name": "variable.other"
+                }
+            },
+            "match": "^\\s*(Feature):(.*)"
+        },
+        "feature_element_keyword": {
+            "captures": {
+                "1": {
+                    "name": "entity.name.type.class"
+                },
+                "2": {
+                    "name": "variable.other"
+                }
+            },
+            "match": "^\\s*(Rule|Background|Scenario|Example|Scenario Outline|Scenario Template|Examples|Scenarios):(.*)"
+        },
+        "step_keyword": {
+            "captures": {
+                "1": {
+                    "name": "entity.name.function"
+                }
+            },
+            "match": "^\\s*(Given|When|Then|And|But|\\*)"
+        },
+        "scenario_outline_variable": {
+            "begin": "(?<![a-zA-Z0-9])[\"']<",
+            "end": ">[\"'](?![a-zA-Z0-9])",
+            "name": "entity.name.function"
+        },
+        "table": {
+            "begin": "^\\s*\\|",
+            "end": "\\|\\s*$",
+            "name": "entity.name.function",
+            "patterns": [
+                {
+                    "match": "\\w",
+                    "name": "entity.name.function"
+                }
+            ]
+        },
+        "strings_single_quote": {
+            "begin": "(?<![a-zA-Z0-9\"])'",
+            "end": "'(?![a-zA-Z0-9\"])",
+            "name": "string.quoted.single"
+        },
+        "strings_double_quote": {
+            "begin": "(?<![a-zA-Z0-9'])\"",
+            "end": "\"(?![a-zA-Z0-9'])",
+            "name": "string.quoted.double"
+        },
+        "strings_triple_quote": {
+            "begin": "\"\"\"",
+            "end": "\"\"\"",
+            "name": "string.quoted.single"
+        },
+        "comments": {
+            "captures": {
+                "0": {
+                    "name": "comment.line.number-sign"
+                }
+            },
+            "match": "^\\s*(#.*)"
+        },
+        "tags": {
+            "captures": {
+                "0": {
+                    "name": "variable.other.constant.property"
+                }
+            },
+            "match": "(@[^@\r\n\t ]+)"
+        }
+    }
+}

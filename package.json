@@ -41,13 +41,18 @@
                     "gherkin",
                     "feature",
                     "cucumber"
-                ],
-                "configuration": ""
+                ]
+            }
+        ],
+        "grammars": [
+            {
+                "language": "gherkin",
+                "scopeName": "text.gherkin",
+                "path": "./client/src/syntaxes/gherkin.tmGrammar.json"
             }
         ]
     },
     "capabilities": {
-        "documentFormattingProvider": "true",
         "configuration": {
             "type": "object",
             "title": "Gherlint configuration",
