@@ -1,12 +1,6 @@
 {
     "name": "gherlint-server",
     "description": "Language server for GherLint",
-    "version": "0.0.1",
-    "engines": {
-        "node": "*"
-    },
-    "author": "Sawjan G.",
-    "license": "MIT",
     "dependencies": {
         "vscode-languageserver": "^7.0.0",
         "vscode-languageserver-textdocument": "^1.0.4"

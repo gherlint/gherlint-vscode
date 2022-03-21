@@ -1,7 +1,7 @@
 {
     "name": "gherlint",
     "displayName": "GherLint",
-    "description": "Formatter and Linter for Gherkin language",
+    "description": "Syntax highlighter, formatter and linter for gherkin language",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.62.0"
