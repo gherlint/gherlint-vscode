@@ -42,10 +42,10 @@
         "feature_keyword": {
             "captures": {
                 "1": {
-                    "name": "storage.type"
+                    "name": "support.class"
                 },
                 "2": {
-                    "name": "variable.other"
+                    "name": "support.variable"
                 }
             },
             "match": "^\\s*(Feature):(.*)"
@@ -53,10 +53,10 @@
         "feature_element_keyword": {
             "captures": {
                 "1": {
-                    "name": "entity.name.type.class"
+                    "name": "support.function"
                 },
                 "2": {
-                    "name": "variable.other"
+                    "name": "support.variable"
                 }
             },
             "match": "^\\s*(Rule|Background|Scenario|Example|Scenario Outline|Scenario Template|Examples|Scenarios):(.*)"
@@ -64,7 +64,7 @@
         "step_keyword": {
             "captures": {
                 "1": {
-                    "name": "entity.name.function"
+                    "name": "keyword.constant"
                 }
             },
             "match": "^\\s*(Given|When|Then|And|But|\\*)"
@@ -72,16 +72,16 @@
         "scenario_outline_variable": {
             "begin": "(?<![a-zA-Z0-9])[\"']?<",
             "end": ">[\"']?(?![a-zA-Z0-9])",
-            "name": "entity.name.function"
+            "name": "keyword.variable"
         },
         "table": {
             "begin": "^\\s*\\|",
             "end": "\\|\\s*$",
-            "name": "entity.name.function",
+            "name": "keyword.constant",
             "patterns": [
                 {
                     "match": "\\w",
-                    "name": "entity.name.function"
+                    "name": "keyword.variable"
                 }
             ]
         },
@@ -111,7 +111,7 @@
         "tags": {
             "captures": {
                 "0": {
-                    "name": "variable.other.constant.property"
+                    "name": "string.regexp"
                 }
             },
             "match": "(@[^@\r\n\t ]+)"
