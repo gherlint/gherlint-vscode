@@ -42,7 +42,8 @@
                     "gherkin",
                     "feature",
                     "cucumber"
-                ]
+                ],
+                "configuration": "./client/language-settings.json"
             }
         ],
         "grammars": [
