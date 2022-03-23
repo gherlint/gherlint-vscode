@@ -2,6 +2,7 @@ const { replaceCommentsTags, replaceDocString, replaceStory, getLineKeyword } = 
 const Keywords = require('../keywords');
 const { addToDiagnostics } = require('./helper');
 const Messages = require('./messages');
+const { globalMatch, firstMatch } = require('../regex');
 
 module.exports.validateDocument = function (document, docConfig) {
     const diagnostics = [];
@@ -15,7 +16,7 @@ module.exports.validateDocument = function (document, docConfig) {
 
 function validateFeatureOccurance(document, diagnostics) {
     const text = document.getText();
-    const regex = /(?<!\S( )*)Feature:/g;
+    const regex = globalMatch.feature;
     let matchCount = 0;
     while ((match = regex.exec(text))) {
         matchCount++;
@@ -38,8 +39,7 @@ function validateFeatureOccurance(document, diagnostics) {
 
 function validateStartingStep(document, diagnostics) {
     const text = replaceCommentsTags(document.getText());
-    const regex =
-        /(?<=(Background:|Scenario( (Outline|Template))?:|Example:)(.*)[\n\r](\s)*)(Given|When|Then|And|But)( )/g;
+    const regex = globalMatch.beginningStep;
 
     while ((match = regex.exec(text))) {
         matchStep = match[0].trim();
@@ -48,7 +48,7 @@ function validateStartingStep(document, diagnostics) {
                 document,
                 diagnostics,
                 match.index,
-                match.index + match[0].length - 1,
+                match.index + match[0].length,
                 Messages.firstStepShouldBeGivenOrWhen
             );
         }
@@ -57,7 +57,7 @@ function validateStartingStep(document, diagnostics) {
 
 function validateByLine(document, text, diagnostics) {
     const lines = text.split('\n');
-    const regex = /(Given|When|Then|And|But)/;
+    const regex = firstMatch.step;
 
     let prevStep = '';
     let index = 0;
