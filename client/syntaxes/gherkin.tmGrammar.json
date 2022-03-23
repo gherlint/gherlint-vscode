@@ -72,7 +72,7 @@
         "scenario_outline_variable": {
             "begin": "(?<![a-zA-Z0-9])[\"']?<",
             "end": ">[\"']?(?![a-zA-Z0-9])",
-            "name": "keyword.variable"
+            "name": "variable.parameter"
         },
         "table": {
             "begin": "^\\s*\\|",
@@ -81,7 +81,7 @@
             "patterns": [
                 {
                     "match": "\\w",
-                    "name": "keyword.variable"
+                    "name": "variable.parameter"
                 }
             ]
         },

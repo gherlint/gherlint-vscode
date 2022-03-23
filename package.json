@@ -50,7 +50,7 @@
             {
                 "language": "gherkin",
                 "scopeName": "text.gherkin",
-                "path": "./client/src/syntaxes/gherkin.tmGrammar.json"
+                "path": "./client/syntaxes/gherkin.tmGrammar.json"
             }
         ]
     },
