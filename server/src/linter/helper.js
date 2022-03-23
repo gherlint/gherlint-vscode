@@ -1,10 +1,16 @@
-const { DiagnosticSeverity } = require('vscode-languageserver/node');
-
-function addToDiagnostics(document, diagnostics, rangeStart, rangeEnd, message, severity = 'Warning') {
-    severity = severity.charAt(0).toUpperCase() + severity.slice(1);
-
+/**
+ *
+ * @param {*} document
+ * @param {array} diagnostics
+ * @param {number} rangeStart
+ * @param {number} rangeEnd
+ * @param {string} message
+ * @param {number} severity Error=1, Warning=2, Information=3, Hint=4
+ * @returns
+ */
+function addToDiagnostics(document, diagnostics, rangeStart, rangeEnd, message, severity = 2) {
     return diagnostics.push({
-        severity: DiagnosticSeverity[severity],
+        severity,
         range: {
             start: document.positionAt(rangeStart),
             end: document.positionAt(rangeEnd),

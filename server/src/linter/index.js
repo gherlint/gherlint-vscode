@@ -1,3 +1,4 @@
+const { DiagnosticSeverity: Severity } = require('vscode-languageserver/node');
 const { replaceCommentsTags, replaceDocString, replaceStory, getLineKeyword } = require('../utils');
 const Keywords = require('../keywords');
 const { addToDiagnostics } = require('./helper');
@@ -28,12 +29,12 @@ function validateFeatureOccurance(document, diagnostics) {
                 match.index,
                 match.index + match[0].length,
                 Messages.mustHaveOnlyOneFeature,
-                'Error'
+                Severity.Error
             );
         }
     }
     if (!matchCount) {
-        addToDiagnostics(document, diagnostics, 1, 1, Messages.mustHaveFeatureName, 'Error');
+        addToDiagnostics(document, diagnostics, 1, 1, Messages.mustHaveFeatureName, Severity.Error);
     }
 }
 
@@ -79,7 +80,7 @@ function validateByLine(document, text, diagnostics) {
 
         const keyword = getLineKeyword(line);
         if (!keyword) {
-            addToDiagnostics(document, diagnostics, index, index + line.length, Messages.invalidLine, 'Error');
+            addToDiagnostics(document, diagnostics, index, index + line.length, Messages.invalidLine, Severity.Error);
             index += lineLength;
             return;
         } else if (!keywordHit && keyword !== Keywords.Feature) {
@@ -89,7 +90,7 @@ function validateByLine(document, text, diagnostics) {
                 index,
                 index + line.length,
                 Messages.mustStartWithFeatureName,
-                'Error'
+                Severity.Error
             );
         }
         keywordHit = true;
@@ -115,7 +116,7 @@ function validateByLine(document, text, diagnostics) {
     });
 }
 
-// return text where tags, comments, user story and docstring are replaced with space
+// returns text where tags, comments, user story and docstring are replaced with spaces
 function getSimpleText(document) {
     let text = replaceCommentsTags(document.getText());
     text = replaceDocString(text);

@@ -1,5 +1,10 @@
 const { globalMatch, firstMatch } = require('./regex');
 
+/**
+ *
+ * @param {string} text
+ * @returns {string}
+ */
 function replaceCommentsTags(text) {
     const lines = text.split('\n');
     let newText = [];
@@ -13,6 +18,11 @@ function replaceCommentsTags(text) {
     return newText.join('\n');
 }
 
+/**
+ *
+ * @param {string} text
+ * @returns {string}
+ */
 function replaceDocString(text) {
     const regex = globalMatch.docString;
     while ((match = regex.exec(text))) {
@@ -22,6 +32,11 @@ function replaceDocString(text) {
     return text;
 }
 
+/**
+ *
+ * @param {string} text
+ * @returns {string}
+ */
 function replaceStory(text) {
     const regex = firstMatch.userStory;
     const match = regex.exec(text);
@@ -32,6 +47,11 @@ function replaceStory(text) {
     return text;
 }
 
+/**
+ *
+ * @param {string} line
+ * @returns {(string|null)}
+ */
 function getLineKeyword(line) {
     const regex = firstMatch.keyword;
     const match = regex.exec(line);

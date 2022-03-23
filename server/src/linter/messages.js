@@ -6,6 +6,6 @@ module.exports = {
     mustStartWithFeatureName: 'A valid feature file must start with a Feature name.\nE.g., Feature: Login feature',
     firstStepShouldBeGivenOrWhen: `Starting step must be "${Keywords.Given}" or "${Keywords.When}" step`,
     invalidLine: 'Invalid line',
-    repeatedStep: `Replace with "${Keywords.And}"`,
-    repeatedStepForThen: `Replace with "${Keywords.And}" or "${Keywords.But}"`,
+    repeatedStep: `Repeated step. Replace with "${Keywords.And}"`,
+    repeatedStepForThen: `Repeated step. Replace with "${Keywords.And}" or "${Keywords.But}"`,
 };
