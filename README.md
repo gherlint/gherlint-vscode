@@ -1,6 +1,6 @@
 <h2 align="center">
   <br>
-    <img src="https://github.com/JankariTech/GherkinLinter/blob/feat/linter/img/logo.png" alt="logo" width="200">
+    <img src="./img/logo.png" alt="logo" width="200">
   <br><br>
   GherLint
   <br>
@@ -10,7 +10,7 @@
 
 ## VS Code GherLint extension
 
-![Screenshot](https://github.com/JankariTech/GherkinLinter/blob/feat/linter/img/screenshot.jpg)
+![Screenshot](./img/screenshot.jpg)
 
 ### Features
 
