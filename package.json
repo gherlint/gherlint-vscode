@@ -74,7 +74,7 @@
         "package": "vsce package",
         "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
     },
-    "dependencies": {
+    "devDependencies": {
         "vsce": "^2.7.0"
     }
 }
