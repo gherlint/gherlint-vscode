@@ -1,12 +1,13 @@
 {
     "name": "gherlint",
     "displayName": "GherLint",
-    "description": "Formatter and Linter for Gherkin language",
-    "version": "0.0.1",
+    "description": "Syntax highlighter, formatter and linter for gherkin language",
+    "version": "0.1.0",
     "engines": {
         "vscode": "^1.62.0"
     },
     "publisher": "sawjan",
+    "icon": "img/logo.png",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -42,12 +43,18 @@
                     "feature",
                     "cucumber"
                 ],
-                "configuration": ""
+                "configuration": "./client/language-settings.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "gherkin",
+                "scopeName": "text.gherkin",
+                "path": "./client/syntaxes/gherkin.tmGrammar.json"
             }
         ]
     },
     "capabilities": {
-        "documentFormattingProvider": "true",
         "configuration": {
             "type": "object",
             "title": "Gherlint configuration",
@@ -57,24 +64,15 @@
                     "type": "number",
                     "default": 1000,
                     "description": "Controls the maximum number of problems produced by the server."
-                },
-                "gherlint.trace.server": {
-                    "scope": "window",
-                    "type": "string",
-                    "enum": [
-                        "off",
-                        "message",
-                        "verbose"
-                    ],
-                    "default": "off",
-                    "description": "Traces the communication between VS Code and the language server."
                 }
             }
         }
     },
     "scripts": {
-        "pretest": "yarn run lint",
-        "vscode:prepublish": "npm run compile",
+        "package": "vsce package",
         "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+    },
+    "dependencies": {
+        "vsce": "^2.7.0"
     }
 }

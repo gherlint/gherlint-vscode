@@ -5,18 +5,27 @@ const {
     DidChangeConfigurationNotification,
     TextDocumentSyncKind,
 } = require('vscode-languageserver/node');
+const { TextDocument } = require('vscode-languageserver-textdocument');
 
-const { validateSteps } = require('./linter');
-const { formatDocument } = require('./formatter');
+const defaultSettings = require('./defaultSettings');
+const { validateDocument } = require('./linter');
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
 const connection = createConnection(ProposedFeatures.all);
 // Text document manager
-const documents = new TextDocuments();
+const documents = new TextDocuments(TextDocument);
 
 let hasConfigurationCapability = false;
 let hasWorkspaceFolderCapability = false;
+
+// The global settings, used when the `workspace/configuration` request is not supported by the client.
+// Please note that this is not the case when using this server with the client provided in this example
+// but could happen with other clients.
+let globalSettings = defaultSettings;
+
+// Cache the settings of all open documents
+let documentSettings = new Map();
 
 connection.onInitialize((params) => {
     const capabilities = params.capabilities;
@@ -29,11 +38,6 @@ connection.onInitialize((params) => {
     const result = {
         capabilities: {
             textDocumentSync: TextDocumentSyncKind.Full,
-            completionProvider: {
-                resolveProvider: true,
-            },
-            documentFormattingProvider: true,
-            documentRangeFormattingProvider: true,
         },
     };
 
@@ -59,40 +63,19 @@ connection.onInitialized(() => {
     }
 });
 
-// The global settings, used when the `workspace/configuration` request is not supported by the client.
-// Please note that this is not the case when using this server with the client provided in this example
-// but could happen with other clients.
-const defaultSettings = { maxNumberOfProblems: 1000 };
-let globalSettings = defaultSettings;
-
-// Cache the settings of all open documents
-let documentSettings = new Map();
-
 connection.onDidChangeConfiguration((change) => {
     if (hasConfigurationCapability) {
         // Reset all cached document settings
         documentSettings.clear();
     } else {
-        globalSettings = change.settings.languageServerExample || defaultSettings;
+        globalSettings = change.settings.gherlint || defaultSettings;
     }
-    // Revalidate all open text documents
-    documents.all().forEach(validateSteps);
+    // Revalidate all open documents
+    documents.all().forEach((document) => {
+        const docConfig = getDocumentConfig(document.uri);
+        validateDocument(document, docConfig);
+    });
 });
-
-function getDocumentSettings(resource) {
-    if (!hasConfigurationCapability) {
-        return Promise.resolve(globalSettings);
-    }
-    let result = documentSettings.get(resource);
-    if (!result) {
-        result = connection.workspace.getConfiguration({
-            scopeUri: resource,
-            section: 'languageServerExample',
-        });
-        documentSettings.set(resource, result);
-    }
-    return result;
-}
 
 // Only keep settings for open documents
 documents.onDidClose((_event) => {
@@ -102,34 +85,12 @@ documents.onDidClose((_event) => {
 // The content of a text document has changed. This event is emitted
 // when the text document first opened or when its content has changed.
 documents.onDidChangeContent(async ({ document }) => {
-    // check for errors
-    const diagnostics = await validateSteps(document);
+    const docConfig = await getDocumentConfig(document.uri);
+    // Revalidate the document
+    const diagnostics = validateDocument(document, docConfig);
 
     // Send the computed diagnostics to VS Code.
     connection.sendDiagnostics({ uri: document.uri, diagnostics });
-});
-
-connection.onDidChangeWatchedFiles(() => {
-    connection.console.log('We received a file change event');
-});
-
-connection.onDocumentFormatting((params) => {
-    const result = formatDocument(documents, params);
-    return Promise.resolve(result);
-});
-
-// This handler provides the initial list of the completion items.
-connection.onCompletion(() => {
-    // The pass parameter contains the position of the text document in
-    // which code complete got requested. For the example we ignore this
-    // info and always provide the same completion items.
-    return [];
-});
-
-// This handler resolves additional information for the item selected in
-// the completion list.
-connection.onCompletionResolve((item) => {
-    return item;
 });
 
 // Make the text document manager listen on the connection
@@ -138,3 +99,21 @@ documents.listen(connection);
 
 // Listen on the connection
 connection.listen();
+
+async function getDocumentConfig(resource) {
+    if (!hasConfigurationCapability) {
+        return globalSettings;
+    }
+    let result = documentSettings.get(resource);
+    if (!result) {
+        result = await connection.workspace.getConfiguration({
+            scopeUri: resource,
+            section: 'gherlint',
+        });
+        if (!result) {
+            return globalSettings;
+        }
+        documentSettings.set(resource, result);
+    }
+    return result;
+}

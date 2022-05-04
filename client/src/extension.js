@@ -36,12 +36,7 @@ function activate(context) {
     };
 
     // Create the language client.
-    client = new LanguageClient(
-        'gherkinlinter_client',
-        'Linter and formatter for feature files',
-        serverOptions,
-        clientOptions
-    );
+    client = new LanguageClient('gherlint_client', 'GherLint', serverOptions, clientOptions);
 
     // Start the client. This will also launch the server
     client.start();
