@@ -1,7 +1,7 @@
 {
-    "name": "gherlint",
+    "name": "gherlint-vscode",
     "displayName": "GherLint",
-    "description": "Syntax highlighter, formatter and linter for gherkin language",
+    "description": "Integrates GherLint into VS Code",
     "version": "0.1.0",
     "engines": {
         "vscode": "^1.62.0"
@@ -11,20 +11,22 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/JankariTech/GherkinLinter.git"
+        "url": "https://github.com/gherlint/gherlint-vscode.git"
     },
     "bugs": {
-        "url": "https://github.com/JankariTech/GherkinLinter.git/issues"
+        "url": "https://github.com/gherlint/gherlint-vscode.git/issues"
     },
-    "author": "Sawjan G.",
+    "author": "JankariTech <www.jankaritech.com>",
     "categories": [
-        "Programming Languages"
+        "Programming Languages",
+        "Linters"
     ],
     "keywords": [
         "gherkin",
         "cucumber",
         "feature",
-        "bdd"
+        "bdd",
+        "linter"
     ],
     "activationEvents": [
         "onLanguage:gherkin"
