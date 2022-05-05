@@ -2,6 +2,7 @@ name: build-and-package
 
 on:
     push:
+    pull_request:
         branches:
             - main
 
