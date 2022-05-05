@@ -7,6 +7,9 @@ on:
     pull_request:
         branches:
             - main
+    release:
+        types:
+            - created
 
 jobs:
     build-and-package:
@@ -29,3 +32,9 @@ jobs:
 
             - name: package-extension
               run: npm run package
+
+            - name: publish
+              if: success() && startsWith(github.ref, 'refs/tags/releases/')
+              run: npm run deploy
+              env:
+                  VSCE_PAT: ${{ secrets.VSCE_PAT }}
