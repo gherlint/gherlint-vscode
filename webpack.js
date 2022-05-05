@@ -1,6 +1,6 @@
 module.exports = {
+    mode: 'development',
     target: 'webworker',
-    devtool: 'source-map',
     resolve: {
         mainFields: ['browser', 'module', 'main'],
         extensions: ['.js'],

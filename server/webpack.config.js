@@ -9,7 +9,4 @@ module.exports = merge(common, {
         filename: 'server.js',
         libraryTarget: 'commonjs2',
     },
-    optimization: {
-        // minimizer: [new MinifyJsPlugin()],
-    },
 });

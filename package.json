@@ -72,9 +72,9 @@
     },
     "scripts": {
         "preinstall": "npm i --prefix ./client & npm i --prefix ./server",
-        "build": "concurrently \"npm:build --prefix ./client\"",
+        "build": "concurrently \"npm:build --prefix ./client\" \"npm:build --prefix ./server\"",
         "build:w": "concurrently \"npm:build:w --prefix ./client\" \"npm:build:w --prefix ./server\"",
-        "build:prod": "webpack --mode production --devtool hidden-source-map",
+        "build:prod": "concurrently \"npm:build:prod --prefix ./client\" \"npm:build:prod --prefix ./server\"",
         "package": "vsce package",
         "deploy": "vsce publish"
     },

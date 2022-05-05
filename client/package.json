@@ -1,9 +1,9 @@
 {
     "name": "gherlint-client",
     "scripts": {
-        "build": "webpack --mode development",
-        "build:w": "webpack --mode development --watch",
-        "build:prod": "webpack --mode production --devtool hidden-source-map"
+        "build": "webpack -d eval",
+        "build:w": "webpack -d eval -w",
+        "build:prod": "webpack --mode production"
     },
     "dependencies": {
         "vscode-languageclient": "^7.0.0"

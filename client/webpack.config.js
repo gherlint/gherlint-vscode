@@ -12,7 +12,4 @@ module.exports = merge(common, {
     externals: {
         vscode: 'commonjs vscode',
     },
-    optimization: {
-        // minimizer: [new MinifyJsPlugin()],
-    },
 });
