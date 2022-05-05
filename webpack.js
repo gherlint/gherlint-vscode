@@ -2,9 +2,10 @@ module.exports = {
     target: 'webworker',
     devtool: 'source-map',
     resolve: {
+        mainFields: ['browser', 'module', 'main'],
         extensions: ['.js'],
         fallback: {
-            minimatch: require.resolve('minimatch'),
+            path: require.resolve('path-browserify'),
         },
     },
     module: {

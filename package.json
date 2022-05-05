@@ -31,7 +31,7 @@
     "activationEvents": [
         "onLanguage:gherkin"
     ],
-    "main": "./client/src/extension.js",
+    "main": "./client/dist/extension.js",
     "contributes": {
         "languages": [
             {
@@ -82,6 +82,7 @@
         "@babel/core": "^7.17.10",
         "babel-loader": "^8.2.5",
         "concurrently": "^7.1.0",
+        "path-browserify": "^1.0.1",
         "vsce": "^2.7.0",
         "webpack": "^5.72.0",
         "webpack-cli": "^4.9.2",
