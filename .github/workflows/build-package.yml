@@ -1,0 +1,31 @@
+name: build-and-package
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build-and-package:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: checkout
+              uses: actions/checkout@v2
+
+            - name: node
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+
+            - name: npm install
+              run: npm ci
+
+            - name: build
+              run: npm run build
+
+            - name: package-extension
+              run: npm run package
