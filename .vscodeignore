@@ -2,7 +2,9 @@
 .vscode-test/**
 test/**
 .github/**
-node_modules
+node_modules/**
+client/**
+server/**
 .gitignore
 .yarnrc
 .prettierrc
@@ -12,6 +14,5 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.log
 **/package-lock.json
-**/dist
 CHANGELOG.md
-webpack.js
+webpack.config.js

@@ -31,7 +31,7 @@
     "activationEvents": [
         "onLanguage:gherkin"
     ],
-    "main": "./client/dist/extension.js",
+    "main": "./dist/client.js",
     "contributes": {
         "languages": [
             {
@@ -72,20 +72,18 @@
     },
     "scripts": {
         "preinstall": "npm i --prefix ./client & npm i --prefix ./server",
-        "build": "concurrently \"npm:build --prefix ./client\" \"npm:build --prefix ./server\"",
-        "build:w": "concurrently \"npm:build:w --prefix ./client\" \"npm:build:w --prefix ./server\"",
-        "build:prod": "concurrently \"npm:build:prod --prefix ./client\" \"npm:build:prod --prefix ./server\"",
+        "build": "webpack -d eval",
+        "build:w": "webpack -d eval -w",
+        "build:prod": "webpack --mode production",
         "package": "vsce package",
         "deploy": "vsce publish"
     },
     "devDependencies": {
         "@babel/core": "^7.17.10",
         "babel-loader": "^8.2.5",
-        "concurrently": "^7.1.0",
         "path-browserify": "^1.0.1",
         "vsce": "^2.7.0",
         "webpack": "^5.72.0",
-        "webpack-cli": "^4.9.2",
-        "webpack-merge": "^5.8.0"
+        "webpack-cli": "^4.9.2"
     }
 }

@@ -1,11 +1,6 @@
 {
     "name": "gherlint-server",
     "description": "Language server for GherLint",
-    "scripts": {
-        "build": "webpack -d eval",
-        "build:w": "webpack -d eval -w",
-        "build:prod": "webpack --mode production"
-    },
     "dependencies": {
         "vscode-languageserver": "^7.0.0",
         "vscode-languageserver-textdocument": "^1.0.4"
