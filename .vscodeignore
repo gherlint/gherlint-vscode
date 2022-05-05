@@ -2,7 +2,7 @@
 .vscode-test/**
 test/**
 .github/**
-node_modules/**
+**/node_modules/**
 client/src/**
 server/**
 .gitignore
@@ -16,3 +16,4 @@ vsc-extension-quickstart.md
 **/package-lock.json
 CHANGELOG.md
 webpack.config.js
+**/*.vsix

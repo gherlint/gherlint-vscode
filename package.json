@@ -75,7 +75,7 @@
         "build": "webpack -d eval",
         "build:w": "webpack -d eval -w",
         "build:prod": "webpack --mode production",
-        "package": "vsce package",
+        "package": "npm run build:prod && vsce package",
         "deploy": "vsce publish"
     },
     "devDependencies": {
