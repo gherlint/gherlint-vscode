@@ -2,12 +2,14 @@ name: build-and-package
 
 on:
     push:
+        branches:
+            - main
     pull_request:
         branches:
             - main
 
 jobs:
-    build-package:
+    build-and-package:
         runs-on: ubuntu-latest
 
         steps:
@@ -23,7 +25,7 @@ jobs:
               run: npm ci
 
             - name: build
-              run: npm run build:prod
+              run: npm run build
 
-            - name: package
+            - name: package-extension
               run: npm run package
