@@ -12,5 +12,6 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.log
 **/package-lock.json
+**/dist
 CHANGELOG.md
 webpack.js

@@ -1,6 +1,11 @@
 {
     "name": "gherlint-server",
     "description": "Language server for GherLint",
+    "scripts": {
+        "build": "webpack --mode development",
+        "build:w": "webpack --mode development --watch",
+        "build:prod": "webpack --mode production --devtool hidden-source-map"
+    },
     "dependencies": {
         "vscode-languageserver": "^7.0.0",
         "vscode-languageserver-textdocument": "^1.0.4"

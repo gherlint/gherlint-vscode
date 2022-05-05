@@ -7,7 +7,7 @@ let client;
 function activate(context) {
     console.log('gherlint extension started...');
     // The server is implemented in node
-    const serverModule = context.asAbsolutePath(path.join('server', 'src', 'server.js'));
+    const serverModule = context.asAbsolutePath(path.join('server', 'dist', 'server.js'));
 
     // The debug options for the server
     // '--inspect=6009' runs the server in Node's Inspector mode

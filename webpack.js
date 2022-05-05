@@ -1,8 +1,11 @@
 module.exports = {
     target: 'webworker',
     devtool: 'source-map',
-    externals: {
-        vscode: 'commonjs vscode',
+    resolve: {
+        extensions: ['.js'],
+        fallback: {
+            minimatch: require.resolve('minimatch'),
+        },
     },
     module: {
         rules: [
