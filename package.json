@@ -71,8 +71,9 @@
         }
     },
     "scripts": {
+        "preinstall": "npm i --prefix ./client & npm i --prefix ./server",
         "package": "vsce package",
-        "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+        "deploy": "vsce publish"
     },
     "devDependencies": {
         "vsce": "^2.7.0"

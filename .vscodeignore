@@ -1,9 +1,15 @@
 .vscode/**
 .vscode-test/**
 test/**
+.github/**
+node_modules
 .gitignore
 .yarnrc
+.prettierrc
 vsc-extension-quickstart.md
 **/jsconfig.json
 **/*.map
 **/.eslintrc.json
+**/*.log
+**/package-lock.json
+CHANGELOG.md
