@@ -3,7 +3,7 @@
 test/**
 .github/**
 node_modules/**
-client/**
+client/src/**
 server/**
 .gitignore
 .yarnrc
