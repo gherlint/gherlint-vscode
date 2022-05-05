@@ -13,3 +13,4 @@ vsc-extension-quickstart.md
 **/*.log
 **/package-lock.json
 CHANGELOG.md
+webpack.js
