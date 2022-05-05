@@ -6,7 +6,7 @@
     "engines": {
         "vscode": "^1.62.0"
     },
-    "publisher": "sawjan",
+    "publisher": "jankaritech",
     "icon": "img/logo.png",
     "license": "MIT",
     "repository": {
