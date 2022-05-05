@@ -2,11 +2,11 @@
     "name": "gherlint-vscode",
     "displayName": "GherLint",
     "description": "Integrates GherLint into VS Code",
-    "version": "0.1.0",
+    "version": "0.0.1",
     "engines": {
         "vscode": "^1.62.0"
     },
-    "publisher": "sawjan",
+    "publisher": "jankaritech",
     "icon": "img/logo.png",
     "license": "MIT",
     "repository": {
@@ -74,7 +74,7 @@
         "package": "vsce package",
         "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
     },
-    "dependencies": {
+    "devDependencies": {
         "vsce": "^2.7.0"
     }
 }
