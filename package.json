@@ -75,7 +75,6 @@
         "build": "webpack -d eval",
         "build:w": "webpack -d eval -w",
         "build:prod": "webpack --mode production",
-        "vscode:prepublish": "npm run build:prod",
         "package": "vsce package",
         "deploy": "vsce publish"
     },
