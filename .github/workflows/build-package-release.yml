@@ -33,9 +33,10 @@ jobs:
               run: npm run package
 
             - name: upload-artifacts
+              if: success() && startsWith(github.ref, 'refs/tags/')
               uses: fnkr/github-action-ghr@v1
               env:
-                  GHR_PATH: *.vsix
+                  GHR_PATH: packages/
                   GHR_REPLACE: true
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

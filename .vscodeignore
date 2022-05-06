@@ -5,6 +5,7 @@ test/**
 **/node_modules/**
 client/src/**
 server/**
+packages/**
 .gitignore
 .yarnrc
 .prettierrc
