@@ -1,0 +1,47 @@
+name: build-package-release
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+    release:
+        types: [published]
+
+jobs:
+    build-package-release:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: checkout
+              uses: actions/checkout@v2
+
+            - name: node
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+
+            - name: npm install
+              run: npm ci
+
+            - name: build
+              run: npm run build:prod
+
+            - name: package
+              run: npm run package
+
+            - name: upload-artifacts
+              if: success() && startsWith(github.ref, 'refs/tags/')
+              uses: fnkr/github-action-ghr@v1
+              env:
+                  GHR_PATH: packages/
+                  GHR_REPLACE: true
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: publish
+              if: success() && startsWith(github.ref, 'refs/tags/')
+              run: npm run deploy
+              env:
+                  VSCE_PAT: ${{ secrets.VSCE_PAT }}
