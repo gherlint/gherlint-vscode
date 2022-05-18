@@ -8,7 +8,7 @@ const {
 const { TextDocument } = require('vscode-languageserver-textdocument');
 
 const defaultSettings = require('./defaultSettings');
-const { validateDocument } = require('./linter');
+const { lint } = require('./linter');
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -73,7 +73,7 @@ connection.onDidChangeConfiguration((change) => {
     // Revalidate all open documents
     documents.all().forEach((document) => {
         const docConfig = getDocumentConfig(document.uri);
-        validateDocument(document, docConfig);
+        lint(document, docConfig);
     });
 });
 
@@ -87,7 +87,7 @@ documents.onDidClose((_event) => {
 documents.onDidChangeContent(async ({ document }) => {
     const docConfig = await getDocumentConfig(document.uri);
     // Revalidate the document
-    const diagnostics = validateDocument(document, docConfig);
+    const diagnostics = lint(document, docConfig);
 
     // Send the computed diagnostics to VS Code.
     connection.sendDiagnostics({ uri: document.uri, diagnostics });

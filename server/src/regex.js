@@ -1,6 +1,6 @@
 module.exports = {
     globalMatch: {
-        feature: /(?<!\S( )*)Feature:/g,
+        feature: /(?<!\S)Feature:/g,
         beginningStep:
             /(?<=(Background:|Scenario( (Outline|Template))?:|Example:)(.*)[\n\r](\s)*)(Given|When|Then|And|But)(?= )/g,
         docString: /"""[\s\S]*?"""/g,
