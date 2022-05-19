@@ -76,6 +76,7 @@
         "build": "webpack -d eval",
         "build:w": "webpack -d eval -w",
         "build:prod": "webpack --mode production",
+        "test:unit": "npm run test:unit --prefix ./server",
         "package": "mkdir -p packages && vsce package --out packages/",
         "deploy": "vsce publish"
     },

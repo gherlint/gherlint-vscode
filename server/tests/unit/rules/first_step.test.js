@@ -4,6 +4,7 @@ const Messages = require('../../../src/linter/messages');
 const Rule = require('../../../src/linter/rules/first_step');
 
 const testCases = [
+    // [<test description>, <text content>, <expected>]
     ['Background - Then', 'Background: description\n    Then a step', [buildLintInfo(28, 32)]],
     ['Background - And', 'Background: description\n  And a step', [buildLintInfo(26, 29)]],
     ['Background - But', 'Background: description\n But a step', [buildLintInfo(25, 28)]],
