@@ -4,7 +4,8 @@
     "description": "Integrates GherLint into VS Code",
     "version": "0.0.1",
     "engines": {
-        "vscode": "^1.62.0"
+        "vscode": "^1.62.0",
+        "node": ">=14.0.0"
     },
     "publisher": "jankaritech",
     "icon": "img/logo.png",
