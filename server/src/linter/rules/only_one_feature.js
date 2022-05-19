@@ -1,10 +1,10 @@
 const { DiagnosticSeverity: Severity } = require('vscode-languageserver/node');
 const { globalMatch } = require('../../regex');
 const Messages = require('../messages');
-const { addToDiagnostics } = require('../helper');
 
 module.exports = {
-    run: function (document, text, diagnostics) {
+    run: function (text) {
+        const problems = [];
         const regex = globalMatch.feature;
         let matchCount = 0;
 
@@ -12,18 +12,23 @@ module.exports = {
             matchCount++;
             // only show error from second match onward
             if (matchCount > 1) {
-                addToDiagnostics(
-                    document,
-                    diagnostics,
-                    match.index,
-                    match.index + match[0].length,
-                    Messages.mustHaveOnlyOneFeature,
-                    Severity.Error
-                );
+                problems.push({
+                    startIndex: match.index,
+                    endIndex: match.index + match[0].length,
+                    message: Messages.mustHaveOnlyOneFeature,
+                    severity: Severity.Error,
+                });
             }
         }
         if (!matchCount) {
-            addToDiagnostics(document, diagnostics, 1, 1, Messages.mustHaveFeatureName, Severity.Error);
+            problems.push({
+                startIndex: 1,
+                endIndex: 1,
+                message: Messages.mustHaveFeatureName,
+                severity: Severity.Error,
+            });
         }
+
+        return problems;
     },
 };
