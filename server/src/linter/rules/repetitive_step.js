@@ -1,7 +1,7 @@
+const { DiagnosticSeverity: Severity } = require('vscode-languageserver/node');
 const { firstMatch } = require('../../regex');
 const Keywords = require('../../keywords');
 const Messages = require('../messages');
-const { addToDiagnostics } = require('../helper');
 const { replaceCommentsTags } = require('../../utils');
 
 function isStepKeyword(keyword) {
@@ -19,7 +19,8 @@ function isScenarioKeyword(keyword) {
 }
 
 module.exports = {
-    run: function (document, text, diagnostics) {
+    run: function (text) {
+        const problems = [];
         const sanitizedText = replaceCommentsTags(text);
         const lines = sanitizedText.split('\n');
         const regex = firstMatch.keyword;
@@ -50,12 +51,16 @@ module.exports = {
                     enteredScenario = true;
                     if (prevStep === keyword) {
                         if (keyword !== Keywords.And) {
-                            const rangeEnd = position + match.index + keyword.length;
                             let message = Messages.repeatedStep;
                             if (keyword === Keywords.Then) {
                                 message = Messages.repeatedStepForThen;
                             }
-                            addToDiagnostics(document, diagnostics, position + match.index, rangeEnd, message);
+                            problems.push({
+                                startIndex: position + match.index,
+                                endIndex: position + match.index + keyword.length,
+                                message,
+                                severity: Severity.Warning,
+                            });
                         }
                     }
                     prevStep = keyword;
@@ -66,5 +71,7 @@ module.exports = {
             }
             position += lineLength;
         });
+
+        return problems;
     },
 };

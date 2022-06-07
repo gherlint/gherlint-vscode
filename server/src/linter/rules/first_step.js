@@ -1,22 +1,24 @@
+const { DiagnosticSeverity: Severity } = require('vscode-languageserver/node');
 const { globalMatch } = require('../../regex');
 const Keywords = require('../../keywords');
 const Messages = require('../messages');
-const { addToDiagnostics } = require('../helper');
 
 module.exports = {
-    run: function (document, text, diagnostics) {
+    run: function (text) {
+        const problems = [];
         const regex = globalMatch.beginningStep;
 
         while ((match = regex.exec(text))) {
             if (![Keywords.Given, Keywords.When].includes(match[0])) {
-                addToDiagnostics(
-                    document,
-                    diagnostics,
-                    match.index,
-                    match.index + match[0].length,
-                    Messages.firstStepShouldBeGivenOrWhen
-                );
+                problems.push({
+                    startIndex: match.index,
+                    endIndex: match.index + match[0].length,
+                    message: Messages.firstStepShouldBeGivenOrWhen,
+                    severity: Severity.Warning,
+                });
             }
         }
+
+        return problems;
     },
 };
