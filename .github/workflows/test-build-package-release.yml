@@ -1,4 +1,4 @@
-name: build-package-release
+name: test-build-package-release
 
 on:
     push:
@@ -11,7 +11,7 @@ on:
         types: [published]
 
 jobs:
-    build-package-release:
+    test-build-package-release:
         runs-on: ubuntu-latest
 
         steps:
@@ -25,6 +25,9 @@ jobs:
 
             - name: npm install
               run: npm ci
+
+            - name: unit-tests
+              run: npm run test:unit
 
             - name: build
               run: npm run build:prod

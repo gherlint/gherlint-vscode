@@ -4,7 +4,8 @@
     "description": "Integrates GherLint into VS Code",
     "version": "0.0.1",
     "engines": {
-        "vscode": "^1.62.0"
+        "vscode": "^1.62.0",
+        "node": ">=14.0.0"
     },
     "publisher": "jankaritech",
     "icon": "img/logo.png",
@@ -75,6 +76,7 @@
         "build": "webpack -d eval",
         "build:w": "webpack -d eval -w",
         "build:prod": "webpack --mode production",
+        "test:unit": "npm run test:unit --prefix ./server",
         "package": "mkdir -p packages && vsce package --out packages/",
         "deploy": "vsce publish"
     },
